@@ -1,0 +1,36 @@
+version: '3'
+services:
+  Kali:
+    image: 'sadry/sadry:tp_pen_kali'
+    container_name: Kali
+    stdin_open: true
+    tty: true
+    ports: 
+      - '9020:8080'
+      - '9021:5900'
+    networks: 
+      - pentestnetwork
+  WebPentest:
+    image: 'sadry/td_ids_2021:serv_elec_ok'
+    volumes:
+      - ./startup.sh:/opt/startup.sh
+    command: /opt/startup.sh
+    container_name: WebPentest
+    stdin_open: true
+    tty: true
+    networks:
+      - pentestpivot
+  Samba:
+    image: 'vulhub/samba:4.6.3'
+    container_name: samba
+    stdin_open: true
+    tty: true
+    networks:
+      - pentestnetwork
+      - pentestpivot
+
+networks: 
+  pentestnetwork:
+    driver: bridge
+  pentestpivot:
+    driver: bridge
